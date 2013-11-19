@@ -24,22 +24,29 @@ class Authorize(Authorize):
     Implementation of :class:`provider.views.Authorize`.
     """
     def get_request_form(self, client, data):
+        print(data)
         return AuthorizationRequestForm(data, client=client)
 
     def get_authorization_form(self, request, client, data, client_data):
+        print("get_authorization_form")
         return AuthorizationForm(data)
 
     def get_client(self, client_id):
+        print(client_id)
         try:
             return Client.objects.get(client_id=client_id)
         except Client.DoesNotExist:
+            print("no matching client")
             return None
 
     def get_redirect_url(self, request):
+        print('get_redirect_url')
+        url = reverse('oauth2:redirect')
+        print(url)
         return reverse('oauth2:redirect')
 
     def save_authorization(self, request, client, form, client_data):
-
+        print('save_authorization')
         grant = form.save(commit=False)
 
         if grant is None:
